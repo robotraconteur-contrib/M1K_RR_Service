@@ -9,7 +9,8 @@ end
 object m1k_obj
 	function void setmode (string channel, string mode)
 	function void setled(int8 val)
-	function sample{list} getsample(int16 number)
+	function sample{list} read(int16 number)
+	function void write(string channel, double val)
 	wire sample samples [readonly]
 	function void StartStreaming()
 	function void StopStreaming()

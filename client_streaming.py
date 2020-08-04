@@ -9,19 +9,19 @@ else:
 
 ####################Start Service and robot setup
 url='rr+tcp://localhost:11111?service=m1k'
-sub=RRN.SubscribeService(url)
-while True:
-	try:
-		obj = sub.GetDefaultClient()
-		samples_wire=sub.SubscribeWire("samples")
-		break
-	except RR.ConnectionException:
-		time.sleep(0.1)
+m1k_obj = RRN.ConnectService(url)
+samples_wire=m1k_obj.samples.Connect()
 
 m1k_obj.setmode('A','HI_Z')
 m1k_obj.setmode('B','HI_Z')
-samples=m1k_obj.StartStreaming()
+try:
+	samples=m1k_obj.StartStreaming()
+except:
+	pass
 while True:
 	if samples_wire.TryGetInValue()[0]:
 		sample=samples_wire.InValue
-	output("{: 6f} {: 6f} {: 6f} {: 6f}".format(sample.A[0], sample.A[1], sample.B[0], sample.B[1]))
+		output("{: 6f} {: 6f} {: 6f} {: 6f}".format(sample.A[0], sample.A[1], sample.B[0], sample.B[1]))
+
+#stop streaming
+m1k_obj.StopStreaming()

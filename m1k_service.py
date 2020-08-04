@@ -13,7 +13,12 @@ class m1k(object):
         #start session
         self.session = Session()
         #get device
-        self.device=self.session.devices[0]
+        try:
+            self.device=self.session.devices[0]
+        except IndexError:
+            print("No Device Found")
+            sys.exit(1)
+
         #streaming parameters
         self._streaming=False
         self._lock=threading.RLock()
@@ -51,7 +56,7 @@ class m1k(object):
                 self.sample.B=reading[1]
                 self.samples.OutValue=self.sample
 
-    def getsample(self,number):
+    def read(self,number):
         sample_list=[]        
 
         for sample in self.session.get_samples(1000)[0]:
@@ -59,6 +64,10 @@ class m1k(object):
             self.sample.B=sample[1]
             sample_list.append(copy.deepcopy(self.sample))
         return sample_list
+
+    def write(self,channel, val):
+        self.device.channels[channel].write([val]*self.session.queue_size)
+        return
 
 
 
@@ -73,5 +82,4 @@ with RR.ServerNodeSetup("M1K_Service_Node", 11111):
 
     #Wait for program exit to quit
     input("Press enter to quit")
-    #shutdown
     sys.exit(1)
