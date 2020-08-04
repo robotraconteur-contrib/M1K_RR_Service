@@ -1,0 +1,16 @@
+service edu.rpi.robotics.m1k
+
+stdver 0.9
+struct sample
+	field double[] A
+	field double[] B
+end
+
+object m1k_obj
+	function void setmode (string channel, string mode)
+	function void setled(int8 val)
+	function sample{list} getsample(int16 number)
+	wire sample samples [readonly]
+	function void StartStreaming()
+	function void StopStreaming()
+end
