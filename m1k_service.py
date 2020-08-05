@@ -3,7 +3,7 @@
 import RobotRaconteur as RR
 RRN=RR.RobotRaconteurNode.s
 
-import sys, time, threading, copy
+import sys, time, threading, copy, traceback
 import numpy as np
 from pysmu import Session, LED, Mode
 
@@ -24,6 +24,7 @@ class m1k(object):
         self._lock=threading.RLock()
         #mode 
         self.mode_dict={'HI_Z': Mode.HI_Z,'SVMI': Mode.SVMI,'SIMV':Mode.SIMV}
+        self.port_dict={'PIO_0': 28,'PIO_1': 29,'PIO_2': 47,'PIO_3': 3}
         self.sample=RRN.NewStructure("edu.rpi.robotics.m1k.sample")
 
 
@@ -69,6 +70,16 @@ class m1k(object):
         self.device.channels[channel].write([val]*self.session.queue_size)
         return
 
+    def setpio(self,port,val):
+
+        if val:
+            self.device.ctrl_transfer(0x40, 0x51, self.port_dict[port], 0, 0, 0, 100) # set to 1
+        else:
+            self.device.ctrl_transfer(0x40, 0x50, self.port_dict[port], 0, 0, 0, 100) # set to 0
+    #bug here
+    def getpio(self,port):
+        print(self.device.ctrl_transfer(0xc0, 0x91, self.port_dict[port], 0, 0, 1, 100))
+        return self.device.ctrl_transfer(0xc0, 0x91, self.port_dict[port], 0, 0, 1, 100)
 
 
 with RR.ServerNodeSetup("M1K_Service_Node", 11111):

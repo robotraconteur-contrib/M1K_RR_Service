@@ -5,9 +5,12 @@ import time
 url='rr+tcp://localhost:11111?service=m1k'
 m1k_obj = RRN.ConnectService(url)
 
-i=0
+#toggle PIO on/off
 while True:
-	#light up leds 
-    m1k_obj.setled(i % 8)
-    time.sleep(.5)
-    i+=1
+	m1k_obj.setpio('PIO_3',1)
+	print(m1k_obj.getpio('PIO_3'))
+	time.sleep(1)
+	m1k_obj.setpio('PIO_3',0)
+	print(m1k_obj.getpio('PIO_3'))
+	time.sleep(1)
+	

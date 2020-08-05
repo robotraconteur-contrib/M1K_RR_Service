@@ -11,6 +11,8 @@ object m1k_obj
 	function void setled(int8 val)
 	function sample{list} read(int16 number)
 	function void write(string channel, double val)
+	function void setpio(string port, int8 val)
+	function double getpio(string port)
 	wire sample samples [readonly]
 	function void StartStreaming()
 	function void StopStreaming()
