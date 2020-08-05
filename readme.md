@@ -20,6 +20,8 @@ object m1k_obj
 	function void setled(int8 val)
 	function sample{list} read(int16 number)
 	function void write(string channel, double val)
+	function void setpio(string port, int8 val)
+	function double getpio(string port)
 	wire sample samples [readonly]
 	function void StartStreaming()
 	function void StopStreaming()
@@ -35,5 +37,7 @@ Simply run `$ python m1k_service.py` to start the RR service.
 
 `client_streaming.py`:  get real time reading from the board
 
-`client_write.py`:      write the output to the board
+`client_write.py`:      write the output to the board channel
+
+`client_pio.py`:	toggle the pio pins on/off
 
