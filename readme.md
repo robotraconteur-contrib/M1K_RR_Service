@@ -25,6 +25,7 @@ object m1k_obj
 	wire sample samples [readonly]
 	function void StartStreaming()
 	function void StopStreaming()
+	function void wave(string channel, string wavename, double value1, double value2, double periodvalue, double delayvalue, double dutycyclevalue)
 end
 ```
 ## Usage:
@@ -40,4 +41,6 @@ Simply run `$ python m1k_service.py` to start the RR service.
 `client_write.py`:      write the output to the board channel
 
 `client_pio.py`:	toggle the pio pins on/off
+
+`client_sin.py`:	generate sine wave to channel A, connect channel A to B IN, display reading from channel B
 
