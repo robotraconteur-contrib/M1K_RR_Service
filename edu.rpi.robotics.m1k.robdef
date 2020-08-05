@@ -16,4 +16,5 @@ object m1k_obj
 	wire sample samples [readonly]
 	function void StartStreaming()
 	function void StopStreaming()
+	function void wave(string channel, string wavename, double value1, double value2, double periodvalue, double delayvalue, double dutycyclevalue)
 end

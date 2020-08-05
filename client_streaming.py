@@ -1,4 +1,4 @@
-#Simple example Robot Raconteur client light up M1K led
+#Simple example Robot Raconteur client get real time reading from both channels
 from RobotRaconteur.Client import *
 import sys, time
 
@@ -12,8 +12,8 @@ url='rr+tcp://localhost:11111?service=m1k'
 m1k_obj = RRN.ConnectService(url)
 samples_wire=m1k_obj.samples.Connect()
 
-m1k_obj.setmode('A','HI_Z')
-m1k_obj.setmode('B','HI_Z')
+# m1k_obj.setmode('A','HI_Z')
+# m1k_obj.setmode('B','HI_Z')
 try:
 	samples=m1k_obj.StartStreaming()
 except:

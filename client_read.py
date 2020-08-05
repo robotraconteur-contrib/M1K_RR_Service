@@ -1,4 +1,4 @@
-#Simple example Robot Raconteur client light up M1K led
+#Simple example Robot Raconteur client read number of samples
 from RobotRaconteur.Client import *
 
 ####################Start Service and robot setup

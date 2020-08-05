@@ -26,6 +26,19 @@ class m1k(object):
         self.mode_dict={'HI_Z': Mode.HI_Z,'SVMI': Mode.SVMI,'SIMV':Mode.SIMV}
         self.port_dict={'PIO_0': 28,'PIO_1': 29,'PIO_2': 47,'PIO_3': 3}
         self.sample=RRN.NewStructure("edu.rpi.robotics.m1k.sample")
+        #wave dict
+        self.wavedict = {
+        ('A','sine'): self.device.channels['A'].sine,
+        ('A','triangle'): self.device.channels['A'].triangle,
+        ('A','sawtooth'): self.device.channels['A'].sawtooth,
+        ('A','stairstep'): self.device.channels['A'].stairstep,
+        ('A','square'): self.device.channels['A'].square,
+        ('B','sine'): self.device.channels['B'].sine,
+        ('B','triangle'): self.device.channels['B'].triangle,
+        ('B','sawtooth'): self.device.channels['B'].sawtooth,
+        ('B','stairstep'): self.device.channels['B'].stairstep,
+        ('B','square'): self.device.channels['B'].square
+        }
 
 
     def setmode (self, channel, mode):
@@ -80,6 +93,15 @@ class m1k(object):
     def getpio(self,port):
         print(self.device.ctrl_transfer(0xc0, 0x91, self.port_dict[port], 0, 0, 1, 100))
         return self.device.ctrl_transfer(0xc0, 0x91, self.port_dict[port], 0, 0, 1, 100)
+
+    
+
+    def wave(self, channel, wavename, value1, value2, periodvalue, delayvalue, dutycyclevalue=0.5):
+        if wavename=="square":
+            self.wavedict[(channel,wavename)](value1, value2, periodvalue, delayvalue, dutycyclevalue)
+        else:
+            self.wavedict[(channel,wavename)](value1, value2, periodvalue, delayvalue)
+
 
 
 with RR.ServerNodeSetup("M1K_Service_Node", 11111):
