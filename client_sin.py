@@ -1,5 +1,5 @@
 #Simple example Robot Raconteur client write sin wave to channel A, connect to B and read B
-#Available waveforms: sine, triangle, sawtooth, square (not yet), stairstep
+#Available waveforms: sine, triangle, sawtooth, square, stairstep
 
 from RobotRaconteur.Client import *
 #waveform plotting
