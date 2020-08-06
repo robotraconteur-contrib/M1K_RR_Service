@@ -1,9 +1,6 @@
 from js import print_div
 from js import document
 from js import ImageData
-from js import print_div
-from js import document
-from js import ImageData
 from RobotRaconteur.Client import *
 from matplotlib import pyplot as plt
 import numpy as np
@@ -26,7 +23,7 @@ async def client_matplotlib():
 		m1k_obj.async_setmode('A','SVMI',None)
 		m1k_obj.async_setmode('B','HI_Z',None)
 		#start waveform
-		m1k_obj.async_wave('A', 'triangle', 0, 5, periodvalue, -(periodvalue / 4), 0.5, None)
+		m1k_obj.async_wave('A', 'sine', 0, 5, periodvalue, -(periodvalue / 4), 0.5, None)
 		
 
 		fig, ax = plt.subplots()
@@ -34,8 +31,6 @@ async def client_matplotlib():
 
 		while True:
 			await animate(0,m1k_obj,ax)
-
-			await RRN.AsyncSleep(0.01,None)
 
 	except:
 		import traceback
