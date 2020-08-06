@@ -19,7 +19,7 @@
                 await languagePluginLoader;
                 await pyodide.loadPackage(["numpy"]);  
                 await pyodide.loadPackage(["matplotlib"]);     
-                const response = await fetch("webclient.py", {cache: "no-store"});
+                const response = await fetch("webclient_plotly.py", {cache: "no-store"});
                 const client_py = await response.text();
                 pyodide.runPython(client_py)
             }
