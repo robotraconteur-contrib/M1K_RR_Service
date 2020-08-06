@@ -42,7 +42,10 @@ class m1k(object):
 
 
     def setmode (self, channel, mode):
-        self.device.channels[channel].mode =self.mode_dict[mode]
+        try:
+            self.device.channels[channel].mode =self.mode_dict[mode]
+        except:
+            traceback.print_exc()
         return
 
     #set 3 leds on/off based on binary value (000~111)
@@ -65,10 +68,13 @@ class m1k(object):
     def stream(self):
         while self._streaming:
             with self._lock:
-                reading=self.device.get_samples(1)[0]
-                self.sample.A=reading[0]
-                self.sample.B=reading[1]
-                self.samples.OutValue=self.sample
+                try:
+                    reading=self.device.get_samples(1)[0]
+                    self.sample.A=reading[0]
+                    self.sample.B=reading[1]
+                    self.samples.OutValue=self.sample
+                except:
+                    traceback.print_exc()
 
     def read(self,number):
         sample_list=[]        

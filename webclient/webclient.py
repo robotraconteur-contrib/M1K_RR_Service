@@ -4,9 +4,7 @@ from js import ImageData
 from RobotRaconteur.Client import *
 from matplotlib import pyplot as plt
 import numpy as np
-import math
-import warnings
-
+import time, traceback
 
 periodvalue=100
 x = np.linspace(0, 2, periodvalue)
@@ -16,24 +14,27 @@ async def client_matplotlib():
 
 	try:
 		m1k_obj=await RRN.AsyncConnectService('rr+ws://localhost:11111/?service=m1k',None,None,None,None)
-		m1k_obj.async_StartStreaming(None)
-		
-		print_div("Running!")
 		#set mode for each channel
 		m1k_obj.async_setmode('A','SVMI',None)
 		m1k_obj.async_setmode('B','HI_Z',None)
 		#start waveform
 		m1k_obj.async_wave('A', 'sine', 0, 5, periodvalue, -(periodvalue / 4), 0.5, None)
-		
 
+		#start streaming
+		m1k_obj.async_StartStreaming(None)
+		
+		print_div("Running!")
+		#plot
 		fig, ax = plt.subplots()
 		fig.show()	
 
 		while True:
-			await animate(0,m1k_obj,ax)
+			try:
+				await animate(0,m1k_obj,ax)
+			except RR.ValueNotSet:
+				pass
 
 	except:
-		import traceback
 		print_div(traceback.format_exc())
 		m1k_obj.async_StopStreaming(None)
 		raise
