@@ -18,7 +18,7 @@ async def client_matplotlib():
 		m1k_obj.async_setmode('A','SVMI',None)
 		m1k_obj.async_setmode('B','HI_Z',None)
 		#start waveform
-		m1k_obj.async_wave('A', 'sine', 0, 5, periodvalue, -(periodvalue / 4), 0.5, None)
+		m1k_obj.async_wave('A', 'triangle', 0, 5, periodvalue, -(periodvalue / 4), 0.5, None)
 
 		#start streaming
 		m1k_obj.async_StartStreaming(None)

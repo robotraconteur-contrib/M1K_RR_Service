@@ -79,7 +79,7 @@ class m1k(object):
     def read(self,number):
         sample_list=[]        
 
-        for sample in self.session.get_samples(1000)[0]:
+        for sample in self.session.get_samples(number)[0]:
             self.sample.A=sample[0]
             self.sample.B=sample[1]
             sample_list.append(copy.deepcopy(self.sample))

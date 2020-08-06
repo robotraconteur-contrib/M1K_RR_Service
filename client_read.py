@@ -9,6 +9,8 @@ m1k_obj = RRN.ConnectService(url)
 m1k_obj.setmode('A','HI_Z')
 m1k_obj.setmode('B','HI_Z')
 #read 1000 samples
-samples=m1k_obj.read(1000)
+samples=m1k_obj.read(2000)
 for sample in samples:
 	print("{: 6f} {: 6f} {: 6f} {: 6f}".format(sample.A[0], sample.A[1], sample.B[0], sample.B[1]))
+
+print(len(samples))
