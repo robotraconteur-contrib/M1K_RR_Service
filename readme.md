@@ -34,7 +34,7 @@ Simply run `$ python m1k_service.py` to start the RR service.
 ## Example Clients:
 `client_led.py`:        light up on-board LED in binary format
 
-`client_read.py`:       get a number of samples from the board 
+`client_read.py`:       get a number of samples from the board, and plot them using matplotlib 
 
 `client_streaming.py`:  get real time reading from the board
 
@@ -43,4 +43,17 @@ Simply run `$ python m1k_service.py` to start the RR service.
 `client_pio.py`:	toggle the pio pins on/off
 
 `client_sin.py`:	generate sine wave to channel A, connect channel A to B IN, display reading from channel B
+
+`client.m`:		simple MATLAB client, same as `client_read.py`
+
+## RR Webclient:
+### Browser Setup:
+* FireFox Only
+
+Type in `about:config` 
+* Find "privacy.file_unique_origin" and set it to false.
+* Find "network.websocket.allowInsecureFromHTTPS" and set it to true
+
+### Usage:
+Simply open the webclient.html with FireFox browser.
 
