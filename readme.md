@@ -3,7 +3,7 @@
 * [RobotRaconteur](https://github.com/robotraconteur/robotraconteur/wiki/Download)
 * [Python bindings](https://github.com/analogdevicesinc/libsmu) (python3.7)
 
-For Windows, the python bindings could be installed together with [PixelPulse2](https://wiki.analog.com/university/tools/m1k/pixelpulse) Software
+For Windows, the python bindings could be installed with libsmu [installer](https://github.com/analogdevicesinc/libsmu/releases/tag/v1.0.2)
 
 ## Service Definition
 ```
