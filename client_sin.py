@@ -15,12 +15,17 @@ periodvalue=100
 x = np.linspace(0, 2, periodvalue)
 y = np.zeros(periodvalue)
 samples_wire=None
+timestamp=0
 def init():
 	line.set_data([], [])
 	return line,
 
 def animate(i):
-	global samples_wire,x,y
+	global samples_wire,x,y,timestamp
+	if timestamp==samples_wire.LastValueReceivedTime:
+		return line,
+	timestamp=samples_wire.LastValueReceivedTime
+	print(samples_wire.WireValueChanged)
 	y=np.roll(y,1)
 	y[0]=samples_wire.InValue.B[0]
 
