@@ -5,7 +5,7 @@ RRN=RR.RobotRaconteurNode.s
 
 import sys, time, threading, copy, traceback
 import numpy as np
-from pysmu import Session, LED, Mode
+from pysmu import Session, LED, Mode, exceptions
 
 class m1k(object):
     #initialization
@@ -18,7 +18,9 @@ class m1k(object):
         except IndexError:
             print("No Device Found")
             sys.exit(1)
-
+        #initialize default mode to HI_Z
+        self.device.channels['A'].mode=Mode.HI_Z
+        self.device.channels['B'].mode=Mode.HI_Z
         #streaming parameters
         self._streaming=False
         self._lock=threading.RLock()
@@ -73,6 +75,12 @@ class m1k(object):
                     self.sample.A=reading[0]
                     self.sample.B=reading[1]
                     self.samples.OutValue=self.sample
+                except exceptions.SessionError:
+                    print("pysmu Session Error while streaming")
+                    self._streaming=False
+                    self.device.channels['A'].mode=Mode.HI_Z
+                    self.device.channels['B'].mode=Mode.HI_Z
+                    break
                 except:
                     traceback.print_exc()
 
@@ -110,15 +118,29 @@ class m1k(object):
 
 
 
-with RR.ServerNodeSetup("M1K_Service_Node", 11111):
-    #Register the service type
-    RRN.RegisterServiceTypeFromFile("edu.rpi.robotics.m1k")
+def main():
+    with RR.ServerNodeSetup("M1K_Service_Node", 11111):
+        #Register the service type
+        RRN.RegisterServiceTypeFromFile("edu.rpi.robotics.m1k")
 
-    m1k_obj=m1k()
+        m1k_obj=m1k()
 
-    #Register the service with object m1k_obj
-    RRN.RegisterService("m1k","edu.rpi.robotics.m1k.m1k_obj",m1k_obj)
+        #Register the service with object m1k_obj
+        RRN.RegisterService("m1k","edu.rpi.robotics.m1k.m1k_obj",m1k_obj)
 
-    #Wait for program exit to quit
-    input("Press enter to quit")
-    sys.exit(1)
+        #Wait for program exit to quit
+        input("Press enter to quit")
+        sys.exit(1)
+
+        
+
+if __name__ == '__main__':
+    try:
+        main()
+
+    except exceptions.SessionError:
+        print("Session Error, restarting service")
+        main()
+    except:
+        traceback.print_exc()
+    

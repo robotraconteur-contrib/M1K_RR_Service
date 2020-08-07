@@ -9,7 +9,7 @@ x = np.linspace(0, 1, periodvalue)
 y_A = np.zeros(periodvalue)
 y_B = np.zeros(periodvalue)
 
-async def client_matplotlib():
+async def client_plotly():
 
 	try:
 		m1k_obj=await RRN.AsyncConnectService('rr+ws://localhost:11111/?service=m1k',None,None,None,None)
@@ -90,4 +90,4 @@ async def plot(m1k_obj):
 	Plotly.react('plot',[waveform_A, waveform_B],layout)
 
 
-RR.WebLoop.run(client_matplotlib())
+RR.WebLoop.run(client_plotly())
