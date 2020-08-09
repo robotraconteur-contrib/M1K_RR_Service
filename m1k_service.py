@@ -119,7 +119,7 @@ class m1k(object):
 
 
 def main():
-    with RR.ServerNodeSetup("M1K_Service_Node", 11111):
+    with RR.ServerNodeSetup("M1K_Service_Node", 11111) as node_setup:
         #Register the service type
         RRN.RegisterServiceTypeFromFile("edu.rpi.robotics.m1k")
 
@@ -127,6 +127,10 @@ def main():
 
         #Register the service with object m1k_obj
         RRN.RegisterService("m1k","edu.rpi.robotics.m1k.m1k_obj",m1k_obj)
+
+        #add ws origin
+        node_setup.tcp_transport.AddWebSocketAllowedOrigin("http://localhost")
+        node_setup.tcp_transport.AddWebSocketAllowedOrigin("https://hehonglu123.github.io")
 
         #Wait for program exit to quit
         input("Press enter to quit")
