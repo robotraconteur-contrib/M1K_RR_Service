@@ -28,12 +28,13 @@ samples_wire=m1k_obj.samples.Connect();
 % plot
 h=plot(y,'YDataSource','y');
 while true
-    timestamp=samples_wire.LastValueReceivedTime;    
-    if timestamp_seconds==timestamp.seconds && timestamp_nano== timestamp.nanoseconds
+    timestamp=samples_wire.LastValueReceivedTime;
+    
+    if timestamp_seconds==samples_wire.LastValueReceivedTime.seconds && timestamp_nano== samples_wire.LastValueReceivedTime.nanoseconds
             continue
     else
-        timestamp_seconds=timestamp.seconds;
-        timestamp_nano= timestamp.nanoseconds;
+        timestamp_seconds=samples_wire.LastValueReceivedTime.seconds;
+        timestamp_nano= samples_wire.LastValueReceivedTime.nanoseconds;
         y=circshift(y,1);
         sample=samples_wire.InValue;
         y(1)=sample.A(1);
