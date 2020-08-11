@@ -12,6 +12,10 @@ class m1k(object):
     def __init__(self):
         #start session
         self.session = Session()
+        #define sample rate
+        self.sample_rate=100000
+        #define streaming sample size
+        self.sample_size=1
         #get device
         try:
             self.device=self.session.devices[0]
@@ -27,7 +31,7 @@ class m1k(object):
         #mode 
         self.mode_dict={'HI_Z': Mode.HI_Z,'SVMI': Mode.SVMI,'SIMV':Mode.SIMV}
         self.port_dict={'PIO_0': 28,'PIO_1': 29,'PIO_2': 47,'PIO_3': 3}
-        self.sample=RRN.NewStructure("edu.rpi.robotics.m1k.sample")
+        # self.sample=RRN.NewStructure("edu.rpi.robotics.m1k.sample")
         #wave dict
         self.wavedict = {
         ('A','sine'): self.device.channels['A'].sine,
@@ -54,6 +58,8 @@ class m1k(object):
     def setled(self,val):
         self.device.set_led(val)
 
+    def s_sample_size(self,sample_size):
+        self.sample_size=sample_size
     def StartStreaming(self):
         if (self._streaming):
             raise Exception("Already streaming")
@@ -71,10 +77,14 @@ class m1k(object):
         while self._streaming:
             with self._lock:
                 try:
-                    reading=self.device.get_samples(1)[0]
-                    self.sample.A=reading[0]
-                    self.sample.B=reading[1]
-                    self.samples.OutValue=self.sample
+                    reading=self.device.get_samples(self.sample_size)
+                    self.samples.OutValue=list(sum(sum(reading, ()),()))
+                    # sample_list=[]  
+                    # for i in range(self.sample_size):
+                    #     self.sample.A=reading[0]
+                    #     self.sample.B=reading[1]
+                    #     sample_list.append(copy.deepcopy(self.sample))
+                    # self.samples.OutValue=sample_list
                 except exceptions.SessionError:
                     print("pysmu Session Error while streaming")
                     self._streaming=False
@@ -85,13 +95,16 @@ class m1k(object):
                     traceback.print_exc()
 
     def read(self,number):
-        sample_list=[]        
+        # sample_list=[]        
+        # for sample in self.session.get_samples(number)[0]:
+        #     self.sample.A=sample[0]
+        #     self.sample.B=sample[1]
+        #     sample_list.append(copy.deepcopy(self.sample))
+        # return sample_list
 
-        for sample in self.session.get_samples(number)[0]:
-            self.sample.A=sample[0]
-            self.sample.B=sample[1]
-            sample_list.append(copy.deepcopy(self.sample))
-        return sample_list
+        ########read number of samples, return 1D list [A_voltage,A_current,B_voltage,B_current,A_voltage,....]
+        reading=self.device.get_samples(number)
+        return list(sum(sum(reading, ()),()))
 
     def write(self,channel, val):
         self.device.channels[channel].write([val]*self.session.queue_size)
