@@ -46,14 +46,5 @@ Simply run `$ python m1k_service.py` to start the RR service.
 
 `client.m`:		simple MATLAB client, same as `client_read.py`
 
-## RR Webclient:
-### Browser Setup:
-* FireFox Only
 
-Type in `about:config` 
-* Find "privacy.file_unique_origin" and set it to false.
-* Find "network.websocket.allowInsecureFromHTTPS" and set it to true
-
-### Usage:
-Simply open the webclient.html with FireFox browser.
 
