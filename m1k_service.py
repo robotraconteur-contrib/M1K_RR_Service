@@ -58,8 +58,6 @@ class m1k(object):
     def setled(self,val):
         self.device.set_led(val)
 
-    def s_sample_size(self,sample_size):
-        self.sample_size=sample_size
     def StartStreaming(self):
         if (self._streaming):
             raise Exception("Already streaming")

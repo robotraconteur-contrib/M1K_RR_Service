@@ -23,7 +23,6 @@ object m1k_obj
 	function void StartStreaming()	
 	#streaming parameters
 	property int32 sample_size
-	function void s_sample_size(int16 sample_size)
 	#stop streaming function		
 	function void StopStreaming()		
 	#set waveform for channel					
