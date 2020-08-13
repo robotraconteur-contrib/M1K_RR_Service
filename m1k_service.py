@@ -50,6 +50,9 @@ class m1k(object):
     def setmode (self, channel, mode):
         try:
             self.device.channels[channel].mode =self.mode_dict[mode]
+            self.StopStreaming()
+            time.sleep(1)
+            self.StartStreaming()
         except:
             traceback.print_exc()
         return
@@ -88,6 +91,7 @@ class m1k(object):
                     self._streaming=False
                     self.device.channels['A'].mode=Mode.HI_Z
                     self.device.channels['B'].mode=Mode.HI_Z
+                    traceback.print_exc()
                     break
                 except:
                     traceback.print_exc()
