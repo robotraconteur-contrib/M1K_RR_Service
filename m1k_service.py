@@ -49,9 +49,9 @@ class m1k(object):
 
     def setmode (self, channel, mode):
         try:
-            self.device.channels[channel].mode =self.mode_dict[mode]
             self.StopStreaming()
-            time.sleep(1)
+            self.device.channels[channel].mode =self.mode_dict[mode]
+            time.sleep(0.1)
             self.StartStreaming()
         except:
             traceback.print_exc()
