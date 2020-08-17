@@ -130,7 +130,7 @@ class m1k(object):
 
     def wave(self, channel, wavename, value1, value2, periodvalue, delayvalue, dutycyclevalue=0.5):
         if wavename=="square":
-            self.wavedict[(channel,wavename)](value1, value2, periodvalue, delayvalue, dutycyclevalue)
+            self.wavedict[(channel,wavename)](value1, value2, periodvalue, delayvalue, 1.-dutycyclevalue)
         else:
             self.wavedict[(channel,wavename)](value1, value2, periodvalue, delayvalue)
 
