@@ -46,5 +46,8 @@ Simply run `$ python m1k_service.py` to start the RR service.
 
 `client.m`:		simple MATLAB client, same as `client_read.py`
 
+## Web Cliet:
+To access the web client version, checkout this repo: https://github.com/hehonglu123/m1k_rr_web
+
 
 
