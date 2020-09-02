@@ -73,8 +73,8 @@ class m1k(object):
 
     #Stop the streaming thread
     def StopStreaming(self):
-        if (not self._streaming):
-            raise Exception("Not streaming")
+        # if (not self._streaming):
+        #     raise Exception("Not streaming")
         self._streaming=False
 
     def stream(self):
@@ -91,7 +91,7 @@ class m1k(object):
                     # self.samples.OutValue=sample_list
                 except exceptions.SessionError:
                     print("pysmu Session Error while streaming")
-                    self._streaming=False
+                    self.StopStreaming()
                     self.device.channels['A'].mode=Mode.HI_Z
                     self.device.channels['B'].mode=Mode.HI_Z
                     traceback.print_exc()
@@ -100,13 +100,6 @@ class m1k(object):
                     traceback.print_exc()
 
     def read(self,number):
-        # sample_list=[]        
-        # for sample in self.session.get_samples(number)[0]:
-        #     self.sample.A=sample[0]
-        #     self.sample.B=sample[1]
-        #     sample_list.append(copy.deepcopy(self.sample))
-        # return sample_list
-
         ########read number of samples, return 1D list [A_voltage,A_current,B_voltage,B_current,A_voltage,....]
         reading=self.device.get_samples(number)
         return list(sum(sum(reading, ()),()))
@@ -115,7 +108,7 @@ class m1k(object):
         if self._streaming:
             self.StopStreaming()
             self.device.channels[channel].write(list(val)*self.session.queue_size)
-            time.sleep(1)
+            time.sleep(0.5)
             self.StartStreaming()
         else:
             self.device.channels[channel].write(list(val)*self.session.queue_size)
