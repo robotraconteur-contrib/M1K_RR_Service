@@ -12,7 +12,7 @@ object m1k_obj
 	#read from channel						
 	function double[] read(int16 number)	
 	#write to channel				
-	function void write(string channel, double val)	
+	function void write(string channel, double[] val)	
 	#set pio state		
 	function void setpio(string port, int8 val)		
 	#get pio state		

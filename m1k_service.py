@@ -52,7 +52,7 @@ class m1k(object):
             if self._streaming:
                 self.StopStreaming()
                 self.device.channels[channel].mode =self.mode_dict[mode]
-                time.sleep(0.1)
+                time.sleep(0.5)
                 self.StartStreaming()
             else:
                 self.device.channels[channel].mode =self.mode_dict[mode]
@@ -112,7 +112,13 @@ class m1k(object):
         return list(sum(sum(reading, ()),()))
 
     def write(self,channel, val):
-        self.device.channels[channel].write([val]*self.session.queue_size)
+        if self._streaming:
+            self.StopStreaming()
+            self.device.channels[channel].write(list(val)*self.session.queue_size)
+            time.sleep(1)
+            self.StartStreaming()
+        else:
+            self.device.channels[channel].write(list(val)*self.session.queue_size)
         return
 
     def setpio(self,port,val):
