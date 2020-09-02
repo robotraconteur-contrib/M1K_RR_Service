@@ -36,7 +36,7 @@ while true
         timestamp_nano= timestamp.nanoseconds;
         y=circshift(y,1);
         sample=samples_wire.InValue;
-        y(1)=sample.A(1);
+        y(1)=sample(1);
         refreshdata(h,'caller') 
         drawnow
     end
