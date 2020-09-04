@@ -83,19 +83,12 @@ class m1k(object):
                 try:
                     reading=self.device.get_samples(self.sample_size)
                     self.samples.OutValue=list(sum(sum(reading, ()),()))
-                    # sample_list=[]  
-                    # for i in range(self.sample_size):
-                    #     self.sample.A=reading[0]
-                    #     self.sample.B=reading[1]
-                    #     sample_list.append(copy.deepcopy(self.sample))
-                    # self.samples.OutValue=sample_list
+
                 except exceptions.SessionError:
-                    print("pysmu Session Error while streaming")
                     self.StopStreaming()
-                    self.device.channels['A'].mode=Mode.HI_Z
-                    self.device.channels['B'].mode=Mode.HI_Z
-                    traceback.print_exc()
-                    break
+                    print("pysmu Session Error while streaming")
+                    self.samples.OutValue=np.zeros(4*self.sample_size)
+                    time.sleep(5)
                 except:
                     traceback.print_exc()
 
@@ -128,11 +121,28 @@ class m1k(object):
     
 
     def wave(self, channel, wavename, value1, value2, periodvalue, delayvalue, dutycyclevalue=0.5):
-        if wavename=="square":
-            self.wavedict[(channel,wavename)](value1, value2, periodvalue, delayvalue, 1.-dutycyclevalue)
-        else:
-            self.wavedict[(channel,wavename)](value1, value2, periodvalue, delayvalue)
+        try:
+            if self._streaming:
+                self.StopStreaming()
+                if wavename=="square":
+                    self.wavedict[(channel,wavename)](value1, value2, periodvalue, delayvalue, 1.-dutycyclevalue)
+                else:
+                    self.wavedict[(channel,wavename)](value1, value2, periodvalue, delayvalue)
+                time.sleep(0.5)
+                self.StartStreaming()
+            else:
+                if wavename=="square":
+                    self.wavedict[(channel,wavename)](value1, value2, periodvalue, delayvalue, 1.-dutycyclevalue)
+                else:
+                    self.wavedict[(channel,wavename)](value1, value2, periodvalue, delayvalue)
+        except:
+            traceback.print_exc()
+        return
 
+       
+        
+    def arbitrary(self,channel,waveform):
+        self.device.channels[channel].arbitrary(waveform,True)
 
 
 def main():
@@ -158,7 +168,6 @@ def main():
 if __name__ == '__main__':
     try:
         main()
-
     except exceptions.SessionError:
         print("Session Error, restarting service")
         main()

@@ -27,4 +27,6 @@ object m1k_obj
 	function void StopStreaming()		
 	#set waveform for channel					
 	function void wave(string channel, string wavename, double value1, double value2, double periodvalue, double delayvalue, double dutycyclevalue)
+	#set arbitrary waveform
+	function void arbitrary(string channel, double[] waveform)
 end
