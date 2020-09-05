@@ -108,6 +108,7 @@ class m1k(object):
                 self.device.channels[channel].write(list(val),True)
         except exceptions.WriteTimeout:
             self.device.get_samples(self.session.queue_size)
+            self.device.channels[channel].write(list(val),True)
         except:
             traceback.print_exc()
         return
