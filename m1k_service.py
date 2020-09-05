@@ -98,13 +98,18 @@ class m1k(object):
         return list(sum(sum(reading, ()),()))
 
     def write(self,channel, val):
-        if self._streaming:
-            self.StopStreaming()
-            self.device.channels[channel].write(list(val)*self.session.queue_size)
-            time.sleep(0.5)
-            self.StartStreaming()
-        else:
-            self.device.channels[channel].write(list(val)*self.session.queue_size)
+        try:
+            if self._streaming:
+                self.StopStreaming()
+                self.device.channels[channel].write(list(val),True)
+                time.sleep(0.5)
+                self.StartStreaming()
+            else:
+                self.device.channels[channel].write(list(val),True)
+        except exceptions.WriteTimeout:
+            self.device.get_samples(self.session.queue_size)
+        except:
+            traceback.print_exc()
         return
 
     def setpio(self,port,val):
