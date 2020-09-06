@@ -31,7 +31,7 @@ class m1k(object):
         #mode 
         self.mode_dict={'HI_Z': Mode.HI_Z,'SVMI': Mode.SVMI,'SIMV':Mode.SIMV}
         self.port_dict={'PIO_0': 28,'PIO_1': 29,'PIO_2': 47,'PIO_3': 3}
-        # self.sample=RRN.NewStructure("edu.rpi.robotics.m1k.sample")
+        self.read_samples=RRN.NewStructure("edu.rpi.robotics.m1k.read_samples")
         #wave dict
         self.wavedict = {
         ('A','sine'): self.device.channels['A'].sine,
@@ -95,7 +95,9 @@ class m1k(object):
     def read(self,number):
         ########read number of samples, return 1D list [A_voltage,A_current,B_voltage,B_current,A_voltage,....]
         reading=self.device.get_samples(number)
-        return list(sum(sum(reading, ()),()))
+        self.read_samples.timestamp=time.time()
+        self.read_samples.data=list(sum(sum(reading, ()),()))
+        return self.read_samples
 
     def write(self,channel, val):
         try:

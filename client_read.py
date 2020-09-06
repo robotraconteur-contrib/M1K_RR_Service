@@ -16,8 +16,8 @@ samples=m1k_obj.read(2000)
 
 
 y=[]
-for i in range(int(len(samples)/4)):
-	print("{: 6f} {: 6f} {: 6f} {: 6f}".format(samples[4*i], samples[4*i+1], samples[4*i+2], samples[4*i+3]))
-	y.append(samples[4*i])
+for i in range(int(len(samples.data)/4)):
+	print("{: 6f} {: 6f} {: 6f} {: 6f}".format(samples.data[4*i], samples.data[4*i+1], samples.data[4*i+2], samples.data[4*i+3]))
+	y.append(samples.data[4*i])
 plt.plot(y)
 plt.show()

@@ -13,7 +13,7 @@ m1k_obj.write('A',y');
 
 
 samples=m1k_obj.read(int16(1000));
-posixtime(datetime)-samples.timestamp
+posixtime(datetime)-samples.time
 plot(samples.data(1:4:end))
 
 

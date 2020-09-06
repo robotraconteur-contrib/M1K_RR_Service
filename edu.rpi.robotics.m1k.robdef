@@ -2,6 +2,11 @@ service edu.rpi.robotics.m1k
 
 stdver 0.9
 
+struct read_samples
+	field double[] data
+	field double timestamp
+end
+
 object m1k_obj
 	#M1K sample rate, fixed
 	property int32 sample_rate	
@@ -10,7 +15,7 @@ object m1k_obj
 	#set led on/off		
 	function void setled(int8 val)	
 	#read from channel						
-	function double[] read(int16 number)	
+	function read_samples read(int16 number)	
 	#write to channel				
 	function void write(string channel, double[] val)	
 	#set pio state		
