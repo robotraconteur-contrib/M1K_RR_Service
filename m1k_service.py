@@ -45,19 +45,15 @@ class m1k(object):
         ('B','stairstep'): self.device.channels['B'].stairstep,
         ('B','square'): self.device.channels['B'].square
         }
-
+        # avoid crashing flag
+        self.need_streaming=False
 
     def setmode (self, channel, mode):
-        try:
-            if self._streaming:
-                self.StopStreaming()
-                self.device.channels[channel].mode =self.mode_dict[mode]
-                time.sleep(0.5)
-                self.StartStreaming()
-            else:
-                self.device.channels[channel].mode =self.mode_dict[mode]
-        except:
-            traceback.print_exc()
+        if self._streaming:
+            self.StopStreaming()
+            self.need_streaming=True
+        self.device.channels[channel].mode =self.mode_dict[mode]
+
         return
 
     #set 3 leds on/off based on binary value (000~111)
@@ -130,19 +126,14 @@ class m1k(object):
 
     def wave(self, channel, wavename, value1, value2, periodvalue, delayvalue, dutycyclevalue=0.5):
         try:
-            if self._streaming:
-                self.StopStreaming()
-                if wavename=="square":
-                    self.wavedict[(channel,wavename)](value1, value2, periodvalue, delayvalue, 1.-dutycyclevalue)
-                else:
-                    self.wavedict[(channel,wavename)](value1, value2, periodvalue, delayvalue)
-                time.sleep(0.5)
-                self.StartStreaming()
+            if wavename=="square":
+                self.wavedict[(channel,wavename)](value1, value2, periodvalue, delayvalue, 1.-dutycyclevalue)
             else:
-                if wavename=="square":
-                    self.wavedict[(channel,wavename)](value1, value2, periodvalue, delayvalue, 1.-dutycyclevalue)
-                else:
-                    self.wavedict[(channel,wavename)](value1, value2, periodvalue, delayvalue)
+                self.wavedict[(channel,wavename)](value1, value2, periodvalue, delayvalue)
+            
+            if self.need_streaming:
+                self.StartStreaming()
+                self.need_streaming=False
         except:
             traceback.print_exc()
         return
@@ -151,6 +142,9 @@ class m1k(object):
         
     def arbitrary(self,channel,waveform):
         self.device.channels[channel].arbitrary(waveform,True)
+        if self.need_streaming:
+            self.StartStreaming()
+            self.need_streaming=False
 
 
 def main():
