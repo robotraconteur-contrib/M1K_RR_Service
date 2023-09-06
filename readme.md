@@ -1,9 +1,9 @@
 # Robot Raconteur M1K Board Service
 ## Prerequisites
 * [RobotRaconteur](https://github.com/robotraconteur/robotraconteur/wiki/Download)
-* [Python bindings](https://github.com/analogdevicesinc/libsmu) (python3.7)
-
-For Windows, the python bindings could be installed with libsmu [installer](https://github.com/analogdevicesinc/libsmu/releases/tag/v1.0.2)
+* [libsmu](https://github.com/analogdevicesinc/libsmu/releases) (check yes for binding installation)
+* [pysmu](https://test.pypi.org/project/pysmu/#files)
+* [ALICE](https://github.com/analogdevicesinc/alice/releases) (GUI tools)
 
 ## Service Definition
 ```
